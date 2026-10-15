@@ -35,3 +35,6 @@ Worker ကို ပြင်ဆင်ရန် / ပြန်တင်ရန်
 5. PWA ကို host တင်ထားပါက updated ဖိုင်များကို အဲဒီ hosting ထဲသို့ upload လုပ်ပါ။ Cache ဟောင်းနေပါက site ကို hard refresh လုပ်ပါ သို့မဟုတ် PWA ကိုပိတ်ဖွင့်ပါ။
 
 လုံခြုံရေးမှတ်ချက်: Worker သည် lat/lon ကိုသာ လက်ခံပြီး Geoapify endpoint ကို ကိုယ်တိုင်တည်ဆောက်သည်။ API key ကို Cloudflare Secret ထဲတွင်သာ ထားပါ။ Production အတွက် cloudflare-worker.js ရှိ ALLOWED_ORIGINS ကို သင့် PWA ၏ domain တစ်ခုတည်းအဖြစ် သတ်မှတ်ပါ။
+
+
+မြေပုံအသစ် (v12): “မြေပုံကြည့်ရန်” ခလုတ်များသည် Google Maps ကို ဖွင့်ပေးပါသည်။
