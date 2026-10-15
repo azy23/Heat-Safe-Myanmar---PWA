@@ -3,23 +3,49 @@ async function getWeather(lat,lon){$('weatherState').textContent='ရာသီ�
 async function loadHeatMap(lat,lon){const box=$('mapFrame');box.innerHTML='<p>အနီးတစ်ဝိုက် အပူချိန်များကို နှိုင်းယှဉ်နေသည်…</p>';try{const offsets=[[-0.18,-0.18],[-0.18,0],[-0.18,0.18],[0,-0.18],[0,0],[0,0.18],[0.18,-0.18],[0.18,0],[0.18,0.18]];const lats=offsets.map(o=>(lat+o[0]).toFixed(4)).join(','),lons=offsets.map(o=>(lon+o[1]).toFixed(4)).join(',');const url=`https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lons}&current=temperature_2m,apparent_temperature&timezone=auto`;const r=await fetch(url);if(!r.ok)throw Error('weather');let data=await r.json();if(!Array.isArray(data))data=[data];let rows=await Promise.all(data.map(async(w,i)=>{let la=lat+offsets[i][0],lo=lon+offsets[i][1],name=`အနီးတစ်ဝိုက် နေရာ ${i+1}`;try{const rr=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${la}&lon=${lo}&zoom=10&accept-language=my`);if(rr.ok){const jj=await rr.json(),a=jj.address||{};name=a.city||a.town||a.village||a.municipality||a.county||a.suburb||name;if(a.state&&name!==a.state)name+='၊ '+a.state}}catch(e){}return {name,la,lo,temp:w.current?.temperature_2m,feels:w.current?.apparent_temperature}}));rows.sort((a,b)=>(b.temp??-999)-(a.temp??-999));box.innerHTML='<div class="heatlist"><h3>🌡️ အပူချိန်အမြင့်ဆုံး နေရာ ၉ ခု</h3><p class="note">လက်ရှိတည်နေရာမှ အနီးတစ်ဝိုက် 3×3 နေရာများကို နှိုင်းယှဉ်ထားသည်။</p></div>';const list=box.querySelector('.heatlist');rows.slice(0,9).forEach((p,i)=>{const item=document.createElement('div');item.className='place heat-place';const info=document.createElement('div'),b=document.createElement('b'),sm=document.createElement('small');b.textContent=`${i+1}. ${p.name}`;sm.textContent=`အပူချိန် ${p.temp==null?'—':Math.round(p.temp)+'°C'} · ခံစားရသောအပူချိန် ${p.feels==null?'—':Math.round(p.feels)+'°C'}`;info.append(b,sm);const a=document.createElement('a');a.target='_blank';a.rel='noopener';a.href=`https://www.openstreetmap.org/?mlat=${p.la}&mlon=${p.lo}#map=12/${p.la}/${p.lo}`;a.textContent='မြေပုံ ↗';item.append(info,a);list.append(item)});const link=document.createElement('p');link.innerHTML=`<a target="_blank" rel="noopener" href="https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=11/${lat}/${lon}">လက်ရှိတည်နေရာမြေပုံ အပြည့်ဖွင့်ရန် ↗</a>`;box.append(link)}catch(e){box.innerHTML=`<p>အပူချိန်မြေပုံဒေတာ မရရှိပါ။ Internet ချိတ်ဆက်မှုကို စစ်ဆေးပြီး “လက်ရှိတည်နေရာနှင့် ရာသီဥတုရှာရန်” ကို ပြန်နှိပ်ပါ။</p><a target="_blank" rel="noopener" href="https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=11/${lat}/${lon}">OpenStreetMap မြေပုံဖွင့်ရန် ↗</a>`}}
 function locate(){if(!navigator.geolocation){toast('ဤ browser တွင် GPS မရနိုင်ပါ။');return}toast('တည်နေရာခွင့်ပြုချက်ကို စောင့်နေသည်…');navigator.geolocation.getCurrentPosition(p=>getWeather(p.coords.latitude,p.coords.longitude),e=>{$('weatherState').textContent=e.code===1?'တည်နေရာခွင့်ပြုချက်လိုအပ်သည်':'တည်နေရာ မရရှိသေးပါ';$('placeTitle').textContent='သင့်မြို့/ဒေသကို အလိုအလျောက်ရှာမရပါ';toast(e.code===1?'Browser မှ Location ခွင့်ပြုချက်ပေးပြီး ပြန်နှိပ်ပါ။':'GPS/Internet ကိုစစ်ပြီး ပြန်ကြိုးစားပါ။')},{enableHighAccuracy:true,timeout:15000,maximumAge:300000})}
 async function nearby(){
- if(!position){$('nearbyResults').textContent='တည်နေရာကို ရယူနေသည်။ ခွင့်ပြုချက်ပေးပြီး ခဏစောင့်ပါ…';return}
- const box=$('nearbyResults');box.textContent='အနီးအနားရှိ အကူအညီရနိုင်သောနေရာများကို ရှာဖွေနေသည်…';
+ const box=$('nearbyResults');
+ if(!position){box.textContent='တည်နေရာကို ရယူနေသည်။ Location ခွင့်ပြုချက်ပေးပြီး ခဏစောင့်ပါ…';return}
+ box.textContent='အနီးအနားရှိ အကူအညီရနိုင်သောနေရာများကို ရှာဖွေနေသည်…';
  const {lat,lon}=position;
- const q=`[out:json][timeout:18];(nwr(around:10000,${lat},${lon})["amenity"~"^(hospital|clinic|doctors|pharmacy|community_centre|library|place_of_worship|social_facility)$"];nwr(around:10000,${lat},${lon})["leisure"="park"];);out center tags;`;
- const endpoints=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter'];
- let j=null,lastError=null;
+ const q=`[out:json][timeout:25];(nwr(around:10000,${lat},${lon})["amenity"~"^(hospital|clinic|doctors|pharmacy|community_centre|library|place_of_worship|social_facility)$"];nwr(around:10000,${lat},${lon})["leisure"="park"];);out center tags;`;
+ const endpoints=[
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass.nchc.org.tw/api/interpreter'
+ ];
+ let data=null,lastError='';
+ // Try GET and POST for each public endpoint; POST can avoid URL/query issues.
  for(const endpoint of endpoints){
-  try{
-   const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),22000);
-   let r;
-   try{r=await fetch(endpoint+'?data='+encodeURIComponent(q),{method:'GET',headers:{'Accept':'application/json'},signal:controller.signal,cache:'no-store'})}finally{clearTimeout(timer)}
-   if(!r.ok)throw Error('HTTP '+r.status);
-   const data=await r.json();if(!Array.isArray(data.elements))throw Error('Invalid response');j=data;break;
-  }catch(e){lastError=e}
+  for(const method of ['POST','GET']){
+   const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
+   try{
+    const options=method==='POST'
+      ? {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8','Accept':'application/json'},body:'data='+encodeURIComponent(q),signal:controller.signal,cache:'no-store'}
+      : {method:'GET',headers:{'Accept':'application/json'},signal:controller.signal,cache:'no-store'};
+    const url=method==='GET'?endpoint+'?data='+encodeURIComponent(q):endpoint;
+    const response=await fetch(url,options);
+    if(!response.ok)throw Error('HTTP '+response.status);
+    const parsed=await response.json();
+    if(!Array.isArray(parsed.elements))throw Error('Invalid response');
+    data=parsed;break;
+   }catch(e){lastError=e?.name==='AbortError'?'timeout':(e?.message||'network error')}
+   finally{clearTimeout(timer)}
+  }
+  if(data)break;
  }
- if(!j){box.innerHTML='အနီးအနားနေရာများ၏ မြေပုံဆာဗာကို ယခုချိတ်ဆက်မရသေးပါ။ ခဏစောင့်ပြီး အောက်ပါ “ကြည့်ရန်” ကို ပြန်နှိပ်ပါ။';toast('Nearby server ကို ချိတ်ဆက်မရပါ');return}
- const arr=(j.elements||[]).map(e=>{const la=e.lat??e.center?.lat,lo=e.lon??e.center?.lon;if(la==null||lo==null)return null;const tag=e.tags||{},am=tag.amenity||'',le=tag.leisure||'';const cat=({hospital:'ဆေးရုံ',clinic:'ဆေးခန်း',doctors:'ဆရာဝန်ဆေးခန်း',pharmacy:'ဆေးဆိုင်',community_centre:'လူမှုစင်တာ',library:'စာကြည့်တိုက်',place_of_worship:'ဘာသာရေးဆိုင်ရာနေရာ',social_facility:'လူမှုစောင့်ရှောက်ရေးနေရာ'})[am]||(le==='park'?'ပန်းခြံ':'အကူအညီရနိုင်သောနေရာ');return {la,lo,cat,name:tag['name:my']||tag.name||tag['name:en']||cat,dist:distance(lat,lon,la,lo)}}).filter(Boolean).sort((a,b)=>a.dist-b.dist).slice(0,30);
+ if(!data){
+  box.innerHTML='';
+  const msg=document.createElement('p');msg.textContent='အနီးအနားနေရာများ၏ အများသုံးမြေပုံဆာဗာများက ယခုအချိန်တွင် တုံ့ပြန်ခြင်းမရှိပါ။ ခဏအကြာတွင် “ကြည့်ရန်” ကို ထပ်နှိပ်ပါ။';
+  const note=document.createElement('p');note.className='note';note.textContent='ဤပြဿနာသည် GPS ချို့ယွင်းမှုမဟုတ်ဘဲ အင်တာနက်၊ ဆာဗာကန့်သတ်ချက် သို့မဟုတ် Browser ကွန်ရက်ကန့်သတ်ချက်ကြောင့် ဖြစ်နိုင်ပါသည်။';
+  const link=document.createElement('a');link.target='_blank';link.rel='noopener';link.href=`https://www.openstreetmap.org/#map=14/${lat}/${lon}`;link.textContent='OpenStreetMap တွင် အနီးအနားနေရာများကို ကြည့်ရန် ↗';
+  box.append(msg,note,link);toast('အနီးအနားနေရာဆာဗာ မတုံ့ပြန်ပါ');return;
+ }
+ const arr=(data.elements||[]).map(e=>{
+  const la=e.lat??e.center?.lat,lo=e.lon??e.center?.lon;if(la==null||lo==null)return null;
+  const tag=e.tags||{},am=tag.amenity||'',le=tag.leisure||'';
+  const cat=({hospital:'ဆေးရုံ',clinic:'ဆေးခန်း',doctors:'ဆရာဝန်ဆေးခန်း',pharmacy:'ဆေးဆိုင်',community_centre:'လူမှုစင်တာ',library:'စာကြည့်တိုက်',place_of_worship:'ဘာသာရေးဆိုင်ရာနေရာ',social_facility:'လူမှုစောင့်ရှောက်ရေးနေရာ'})[am]||(le==='park'?'ပန်းခြံ':'အကူအညီရနိုင်သောနေရာ');
+  return {la,lo,cat,name:tag['name:my']||tag.name||tag['name:en']||cat,dist:distance(lat,lon,la,lo)};
+ }).filter(Boolean).sort((a,b)=>a.dist-b.dist).slice(0,30);
  if(!arr.length){box.textContent='ဒီဧရိယာအတွက် OpenStreetMap မှတ်တမ်းထဲတွင် နေရာမတွေ့ပါ။ ဒေတာမရှိခြင်းသည် အနီးအနားတွင် အကူအညီမရှိဟု မဆိုလိုပါ။';return}
  box.innerHTML='';arr.forEach(p=>{const div=document.createElement('div');div.className='place';const info=document.createElement('div'),b=document.createElement('b'),sm=document.createElement('small');b.textContent=p.name;sm.textContent=`${p.cat} · ${p.dist<1000?Math.round(p.dist)+' မီတာ':(p.dist/1000).toFixed(1)+' ကီလိုမီတာ'}`;info.append(b,sm);const a=document.createElement('a');a.target='_blank';a.rel='noopener';a.href=`https://www.openstreetmap.org/?mlat=${p.la}&mlon=${p.lo}#map=17/${p.la}/${p.lo}`;a.textContent='မြေပုံကြည့်ရန် ↗';div.append(info,a);box.append(div)});
 }
