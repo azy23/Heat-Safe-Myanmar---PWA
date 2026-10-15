@@ -14,3 +14,8 @@ main{max-width:1080px;padding:12px;gap:12px;grid-template-columns:repeat(2,minma
 
 /* Restored hourly and 3-day temperature forecast cards (v13) */
 .forecast-panel{min-width:0}.forecast-list{display:grid;gap:8px}.forecast-item{background:#f4f9f5;border:1px solid #dcebe0;border-radius:12px;padding:10px 12px;min-width:0}.forecast-top{display:flex;justify-content:space-between;align-items:center;gap:8px}.forecast-top b{font-size:13px;overflow-wrap:anywhere}.forecast-top strong{font-size:21px;color:#167d5a;white-space:nowrap}.forecast-item small{display:block;color:#61736a;font-size:12px;margin-top:3px}.forecast-panel .panel-body{margin-top:8px}@media(min-width:760px){main>.forecast-panel{grid-column:auto!important}}
+
+/* v17: keep all four weather metrics balanced; rain chance no longer sits alone */
+.metrics{grid-template-columns:repeat(2,minmax(0,1fr));max-width:600px}
+.metrics>div{min-width:0;min-height:76px;display:flex;flex-direction:column;justify-content:center}
+@media(max-width:600px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr));max-width:none}.metrics>div{min-height:70px}}
