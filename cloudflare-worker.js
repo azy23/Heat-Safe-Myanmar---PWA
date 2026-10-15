@@ -27,37 +27,41 @@ export default {
       return json({ error: "Valid lat and lon are required" }, 400);
     }
 
-    const params = new URLSearchParams({
-      categories: "healthcare,activity.community_center,education.library,leisure.park,religion",
-      filter: `circle:${lon},${lat},10000`,
-      bias: `proximity:${lon},${lat}`,
-      limit: "100",
-      lang: "en",
-      apiKey: env.GEOAPIFY_API_KEY
-    });
+    // Query healthcare separately so parks/community/religious places cannot crowd hospitals and pharmacies out of the result limit.
+    const base = { filter: `circle:${lon},${lat},10000`, bias: `proximity:${lon},${lat}`, limit: "100", lang: "en", apiKey: env.GEOAPIFY_API_KEY };
+    const queryPlaces = async (categories) => {
+      const params = new URLSearchParams({ ...base, categories });
+      const upstream = await fetch(`https://api.geoapify.com/v2/places?${params.toString()}`, { headers: { Accept: "application/json" } });
+      const body = await upstream.text();
+      if (!upstream.ok) throw new Error(`Geoapify ${upstream.status}: ${body.slice(0, 300)}`);
+      return JSON.parse(body).features || [];
+    };
 
     try {
-      const upstream = await fetch(`https://api.geoapify.com/v2/places?${params.toString()}`, {
-        headers: { Accept: "application/json" }
-      });
-      const body = await upstream.text();
-      if (!upstream.ok) {
-        return json({ error: "Geoapify request failed", upstreamStatus: upstream.status, upstreamMessage: body.slice(0, 500) }, 502);
-      }
-      const data = JSON.parse(body);
-      const elements = (data.features || []).map(feature => {
+      const [healthFeatures, otherFeatures] = await Promise.all([
+        queryPlaces("healthcare"),
+        queryPlaces("activity.community_center,education.library,leisure.park,religion")
+      ]);
+      const features = [...healthFeatures, ...otherFeatures];
+      const seen = new Set();
+      const elements = features.map(feature => {
         const p = feature.properties || {};
         const coordinates = feature.geometry && feature.geometry.coordinates;
         if (!Array.isArray(coordinates) || !Number.isFinite(coordinates[0]) || !Number.isFinite(coordinates[1])) return null;
         const cats = Array.isArray(p.categories) ? p.categories : [];
         const tags = { name: p.name || p.address_line1 || "Unnamed place" };
-        if (cats.some(c => c.startsWith("healthcare.hospital"))) tags.amenity = "hospital";
-        else if (cats.some(c => c.startsWith("healthcare.pharmacy"))) tags.amenity = "pharmacy";
+        if (cats.some(c => c === "healthcare.hospital" || c.startsWith("healthcare.hospital."))) tags.amenity = "hospital";
+        else if (cats.some(c => c === "healthcare.pharmacy" || c.startsWith("healthcare.pharmacy."))) tags.amenity = "pharmacy";
+        else if (cats.some(c => c.startsWith("healthcare.clinic_or_praxis"))) tags.amenity = "clinic";
+        else if (cats.some(c => c.startsWith("healthcare.dentist"))) tags.amenity = "doctors";
         else if (cats.some(c => c.startsWith("healthcare"))) tags.amenity = "clinic";
         else if (cats.includes("activity.community_center")) tags.amenity = "community_centre";
         else if (cats.includes("education.library")) tags.amenity = "library";
         else if (cats.some(c => c.startsWith("leisure.park"))) tags.leisure = "park";
         else if (cats.some(c => c.startsWith("religion"))) tags.amenity = "place_of_worship";
+        const key = `${coordinates[1].toFixed(5)},${coordinates[0].toFixed(5)},${tags.amenity || tags.leisure || "other"}`;
+        if (seen.has(key)) return null;
+        seen.add(key);
         return { lat: coordinates[1], lon: coordinates[0], tags };
       }).filter(Boolean);
       return json({ elements }, 200, { "Cache-Control": "public, max-age=60" });
