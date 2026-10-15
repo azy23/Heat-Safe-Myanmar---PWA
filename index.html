@@ -15,8 +15,8 @@
    const title=heading.querySelector('h2')||heading;
    const row=document.createElement('div'); row.className='panel-title-row';
    panel.insertBefore(row,heading); row.appendChild(heading);
-   const btn=document.createElement('button'); btn.type='button'; btn.className='panel-toggle'; btn.textContent=(i===3?'ဖွင့်ကြည့်ရန်':'ကြည့်ရန်'); btn.setAttribute('aria-expanded','false'); row.appendChild(btn);
-   const initiallyOpen=(i===3 || panel.classList.contains('forecast-panel')); if(!initiallyOpen) panel.classList.add('panel-collapsed'); else {btn.textContent='ပိတ်ရန်';btn.setAttribute('aria-expanded','true');}
+   const btn=document.createElement('button'); btn.type='button'; btn.className='panel-toggle'; btn.textContent='ကြည့်ရန်'; btn.setAttribute('aria-expanded','false'); row.appendChild(btn);
+   const initiallyOpen=false; panel.classList.add('panel-collapsed');
    btn.addEventListener('click',()=>{const collapsed=panel.classList.toggle('panel-collapsed');btn.textContent=collapsed?'ကြည့်ရန်':'ပိတ်ရန်';btn.setAttribute('aria-expanded',String(!collapsed)); if(!collapsed && panel.id==='nearbyPanel' && window.loadNearbyPlaces) window.loadNearbyPlaces();});
  });
 })();
