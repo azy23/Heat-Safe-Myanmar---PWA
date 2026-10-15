@@ -9,9 +9,10 @@ async function nearby(){
  const {lat,lon}=position;
  const q=`[out:json][timeout:25];(nwr(around:10000,${lat},${lon})["amenity"~"^(hospital|clinic|doctors|pharmacy|community_centre|library|place_of_worship|social_facility)$"];nwr(around:10000,${lat},${lon})["leisure"="park"];);out center tags;`;
  const endpoints=[
-  'https://overpass-api.de/api/interpreter',
+  'https://overpass.private.coffee/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter',
-  'https://overpass.nchc.org.tw/api/interpreter'
+  'https://overpass.nchc.org.tw/api/interpreter',
+  'https://overpass-api.de/api/interpreter'
  ];
  let data=null,lastError='';
  // Try GET and POST for each public endpoint; POST can avoid URL/query issues.
@@ -20,8 +21,8 @@ async function nearby(){
    const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
    try{
     const options=method==='POST'
-      ? {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8','Accept':'application/json'},body:'data='+encodeURIComponent(q),signal:controller.signal,cache:'no-store'}
-      : {method:'GET',headers:{'Accept':'application/json'},signal:controller.signal,cache:'no-store'};
+      ? {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(q),signal:controller.signal,cache:'no-store'}
+      : {method:'GET',signal:controller.signal,cache:'no-store'};
     const url=method==='GET'?endpoint+'?data='+encodeURIComponent(q):endpoint;
     const response=await fetch(url,options);
     if(!response.ok)throw Error('HTTP '+response.status);
@@ -37,8 +38,9 @@ async function nearby(){
   box.innerHTML='';
   const msg=document.createElement('p');msg.textContent='အနီးအနားနေရာများ၏ အများသုံးမြေပုံဆာဗာများက ယခုအချိန်တွင် တုံ့ပြန်ခြင်းမရှိပါ။ ခဏအကြာတွင် “ကြည့်ရန်” ကို ထပ်နှိပ်ပါ။';
   const note=document.createElement('p');note.className='note';note.textContent='ဤပြဿနာသည် GPS ချို့ယွင်းမှုမဟုတ်ဘဲ အင်တာနက်၊ ဆာဗာကန့်သတ်ချက် သို့မဟုတ် Browser ကွန်ရက်ကန့်သတ်ချက်ကြောင့် ဖြစ်နိုင်ပါသည်။';
-  const link=document.createElement('a');link.target='_blank';link.rel='noopener';link.href=`https://www.openstreetmap.org/#map=14/${lat}/${lon}`;link.textContent='OpenStreetMap တွင် အနီးအနားနေရာများကို ကြည့်ရန် ↗';
-  box.append(msg,note,link);toast('အနီးအနားနေရာဆာဗာ မတုံ့ပြန်ပါ');return;
+  const link=document.createElement('a');link.target='_blank';link.rel='noopener';link.href=`https://www.openstreetmap.org/#map=14/${lat}/${lon}`;link.textContent='OpenStreetMap မြေပုံတွင် ကြည့်ရန် ↗';
+  const search=document.createElement('a');search.target='_blank';search.rel='noopener';search.href=`https://www.google.com/maps/search/hospital+clinic+pharmacy+near+me/@${lat},${lon},13z`;search.textContent='Google Maps မှ အနီးအနားဆေးရုံ/ဆေးခန်း/ဆေးဆိုင် ရှာရန် ↗';
+  box.append(msg,note,link,document.createElement('br'),search);toast('အနီးအနားနေရာဆာဗာ မတုံ့ပြန်ပါ');return;
  }
  const arr=(data.elements||[]).map(e=>{
   const la=e.lat??e.center?.lat,lo=e.lon??e.center?.lon;if(la==null||lo==null)return null;
