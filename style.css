@@ -11,3 +11,6 @@ main{max-width:1080px;padding:12px;gap:12px;grid-template-columns:repeat(2,minma
 @media(min-width:760px){main{grid-template-columns:repeat(2,minmax(0,1fr))}.hero,.guide{grid-column:1/-1}main>.panel{grid-column:auto!important;min-height:150px}}
 
 .heatlist h3{margin:4px 0 8px}.heat-place{align-items:center}.heat-place:nth-child(2),.heat-place:nth-child(3),.heat-place:nth-child(4){border-left:4px solid #d97706}.heat-place small{display:block;color:#52635c;margin-top:4px}.heat-place a{white-space:nowrap}
+
+/* Restored hourly and 3-day temperature forecast cards (v13) */
+.forecast-panel{min-width:0}.forecast-list{display:grid;gap:8px}.forecast-item{background:#f4f9f5;border:1px solid #dcebe0;border-radius:12px;padding:10px 12px;min-width:0}.forecast-top{display:flex;justify-content:space-between;align-items:center;gap:8px}.forecast-top b{font-size:13px;overflow-wrap:anywhere}.forecast-top strong{font-size:21px;color:#167d5a;white-space:nowrap}.forecast-item small{display:block;color:#61736a;font-size:12px;margin-top:3px}.forecast-panel .panel-body{margin-top:8px}@media(min-width:760px){main>.forecast-panel{grid-column:auto!important}}
