@@ -19,3 +19,11 @@ main{max-width:1080px;padding:12px;gap:12px;grid-template-columns:repeat(2,minma
 .metrics{grid-template-columns:repeat(2,minmax(0,1fr));max-width:600px}
 .metrics>div{min-width:0;min-height:76px;display:flex;flex-direction:column;justify-content:center}
 @media(max-width:600px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr));max-width:none}.metrics>div{min-height:70px}}
+
+
+/* v21: direct Facebook Page Messenger contact button */
+.messenger-contact-button{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;max-width:430px;min-height:44px;box-sizing:border-box;padding:11px 15px;margin:9px 0 0;border-radius:12px;background:#0866ff;color:#fff;text-decoration:none;font-size:14px;font-weight:750;text-align:center;box-shadow:0 3px 10px rgba(8,102,255,.16);transition:background .15s ease,transform .15s ease}
+.messenger-contact-button:hover{background:#0757d5}
+.messenger-contact-button:active{transform:translateY(1px)}
+.messenger-contact-button:focus-visible{outline:3px solid #8bb8ff;outline-offset:3px}
+@media(max-width:600px){.messenger-contact-button{max-width:none;margin-top:8px}}
