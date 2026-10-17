@@ -38,3 +38,22 @@ Worker ကို ပြင်ဆင်ရန် / ပြန်တင်ရန်
 
 
 မြေပုံအသစ် (v12): “မြေပုံကြည့်ရန်” ခလုတ်များသည် Google Maps ကို ဖွင့်ပေးပါသည်။
+
+
+AI Chatbot ထည့်သွင်းထားသော v25
+--------------------------------
+ပါဝင်သည်: အပူဒဏ်ကျန်းမာရေး AI chatbot UI နှင့် Worker code သီးခြားဖိုင်။ Messenger ခလုတ်နှင့် မူလ PWA features များကို ထိန်းထားသည်။
+
+Chatbot ကို စမ်းသပ်ရန်
+1. ZIP ကို ဖြည်ပါ။
+2. Cloudflare Dashboard → Workers & Pages → heatsafe-ai-assistant → Edit code ကိုဖွင့်ပါ။
+3. ဒီ ZIP ထဲက heatsafe-ai-assistant-worker.js ဖိုင်တစ်ခုလုံးကို ကူးထည့်ပြီး Deploy လုပ်ပါ။ Worker တွင် AI binding အမည် AI ရှိရပါမည်။
+4. PWA ဖိုင်များကို လက်ရှိ https://heatsafemm.vercel.app hosting ထဲသို့ တင်ပါ။ index.html, style.css, app.js, chat.js, sw.js နှင့် manifest.webmanifest အားလုံးကို တင်ပါ။
+5. Website ကို ပြန်ဖွင့်ပြီး “🤖 အပူဒဏ်ကျန်းမာရေး AI အကူအညီ” အပိုင်းမှာ “အပူကြောင့် မူးဝေလာရင် ဘာလုပ်ရမလဲ” ဟု မေးပါ။
+
+အခမဲ့အသုံးပြုမှု အရေးကြီးချက်
+- Model ကို @cf/meta/llama-3.2-1b-instruct သို့ ပြောင်းထားသည်။ API key ကို browser ထဲမထည့်ပါ။ Paid fallback မရှိပါ။
+- အခမဲ့ quota ပြည့်လျှင် Cloudflare Workers AI က request ကို ငြင်းပယ်နိုင်ပြီး chatbot က အမှားပြသမည်။
+- အခကြေးငွေ မဖြစ်စေရန် Cloudflare account ကို Workers Free plan တွင်သာ ထားပါ။ Workers Paid plan သို့ မတင်ပါနှင့်။ Account paid plan ဖြစ်နေပါက free quota ကျော်သုံးစွဲမှုအတွက် ကောက်ခံနိုင်သောကြောင့် ဒီလိုအပ်ချက်အတွက် မသင့်ပါ။ Cloudflare AI free allowance သည် အကောင့်အလိုက် နေ့စဉ်ကန့်သတ်ချက်ရှိပြီး ပြည့်သွားလျှင် reset အထိ ရပ်မည်။
+- ဒီ Worker သည် health/heat-related topic များကိုသာ AI ဆီပို့သည်။ အခြားမေးခွန်းများအတွက် fixed reply ပြန်ပေးသည်။
+- AI အဖြေသည် ဆေးဘက်ဆိုင်ရာ အရေးပေါ်အကဲဖြတ်မှု မဟုတ်ပါ။ သတိလစ်ခြင်း၊ စိတ်ရှုပ်ထွေးခြင်း သို့မဟုတ် တက်ခြင်းရှိလျှင် အရေးပေါ်ဆေးကုသမှု ချက်ချင်းရယူပါ။
