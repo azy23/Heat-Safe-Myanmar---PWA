@@ -57,3 +57,10 @@ Chatbot ကို စမ်းသပ်ရန်
 - အခကြေးငွေ မဖြစ်စေရန် Cloudflare account ကို Workers Free plan တွင်သာ ထားပါ။ Workers Paid plan သို့ မတင်ပါနှင့်။ Account paid plan ဖြစ်နေပါက free quota ကျော်သုံးစွဲမှုအတွက် ကောက်ခံနိုင်သောကြောင့် ဒီလိုအပ်ချက်အတွက် မသင့်ပါ။ Cloudflare AI free allowance သည် အကောင့်အလိုက် နေ့စဉ်ကန့်သတ်ချက်ရှိပြီး ပြည့်သွားလျှင် reset အထိ ရပ်မည်။
 - ဒီ Worker သည် health/heat-related topic များကိုသာ AI ဆီပို့သည်။ အခြားမေးခွန်းများအတွက် fixed reply ပြန်ပေးသည်။
 - AI အဖြေသည် ဆေးဘက်ဆိုင်ရာ အရေးပေါ်အကဲဖြတ်မှု မဟုတ်ပါ။ သတိလစ်ခြင်း၊ စိတ်ရှုပ်ထွေးခြင်း သို့မဟုတ် တက်ခြင်းရှိလျှင် အရေးပေါ်ဆေးကုသမှု ချက်ချင်းရယူပါ။
+
+
+Version 1.1 UI update (v26)
+- Added a prominent AI assistant spotlight directly below the weather card.
+- Added quick question chips and a clear AI call-to-action.
+- AI chat is expanded and visible by default; the existing AI Worker URL and Nearby Places service are unchanged.
+- Quick questions fill the chat input; the user still taps Send to submit.
