@@ -156,3 +156,17 @@ header{border-bottom:1px solid #dce5e8;border-image:none;background:#fff}
 .ai-chat-messages{background:#f7f9fa;border-color:#e0e7e9}.ai-chat-bot{background:#edf3f4;border-color:#dce5e8;color:#243840}.ai-chat-user{background:#176b57;color:#fff}
 .ai-chat-form textarea:focus{outline:3px solid rgba(49,93,114,.12);border-color:#315d72}.ai-suggestion{background:#f5f8f8;border-color:#d7e3e5;color:#315d72}.ai-suggestion:hover{background:#eaf1f2;border-color:#9eb8bf}
 #toast{background:#173b4f}
+
+/* v30: compact AI card, varied panel colors, recognizable Facebook Messenger action */
+.ai-spotlight{display:none!important}
+.ai-chat-panel{border-top:4px solid #2678f3!important;background:linear-gradient(145deg,#f2f7ff,#fff 65%)}
+.ai-chat-heading-icon{background:#e7f0ff!important;color:#1769e0}
+.ai-chat-panel .panel-toggle{background:#e5efff!important;color:#185abc!important;border-color:#c8dcff!important}
+main>.panel:nth-of-type(2){border-top:4px solid #4c8c72;background:linear-gradient(145deg,#f0f8f2,#fff 65%)}
+main>.panel:nth-of-type(3){border-top:4px solid #d6a642;background:linear-gradient(145deg,#fff9e9,#fff 65%)}
+main>.panel:nth-of-type(4){border-top:4px solid #7b78bd;background:linear-gradient(145deg,#f5f3ff,#fff 65%)}
+main>.panel:nth-of-type(5){border-top:4px solid #d17b61;background:linear-gradient(145deg,#fff4ef,#fff 65%)}
+main>.panel:nth-of-type(6){border-top:4px solid #4b9ca3;background:linear-gradient(145deg,#eef9fa,#fff 65%)}
+main>.panel:nth-of-type(7){border-top:4px solid #729b55;background:linear-gradient(145deg,#f3f8ed,#fff 65%)}
+.messenger-contact-button{background:linear-gradient(135deg,#087cff,#0064e0)!important;color:#fff!important;box-shadow:0 4px 12px rgba(0,100,224,.22)!important;display:flex;align-items:center;justify-content:center;gap:10px}
+.messenger-brand-icon{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center}.messenger-brand-icon svg{display:block;width:24px;height:24px}

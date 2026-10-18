@@ -1,11 +1,5 @@
 <!doctype html><html lang="my"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#173b4f"><meta name="description" content="HeatSafe Myanmar - အပူဒဏ်ကာကွယ်ရေး အကူအညီ"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg"><title>HeatSafe Myanmar</title><link rel="stylesheet" href="style.css"></head><body><header><div class="brand"><span class="logo">☀</span><div><h1>HeatSafe Myanmar</h1><small>အပူဒဏ်ကာကွယ်ရေး အကူအညီ</small></div></div><button id="installBtn" hidden>Install</button></header><main><section class="hero"><p class="eyebrow">လက်ရှိအခြေအနေ</p><h2 id="placeTitle">သင့်ဒေသ၏ အပူအန္တရာယ်</h2><div id="weatherState" class="state">တည်နေရာရယူရန် ခွင့်ပြုချက်ပေးပါ</div><div class="metrics"><div><span>အပူချိန်</span><b id="temp">—</b></div><div><span>ခံစားရသောအပူချိန်</span><b id="feels">—</b></div><div><span>စိုထိုင်းဆ</span><b id="humidity">—</b></div><div><span>မိုးရွာနိုင်ခြေ</span><b id="rainChance">—</b></div></div><button class="primary" id="locateBtn">📍 လက်ရှိတည်နေရာနှင့် ရာသီဥတုရှာရန်</button><p class="note" id="weatherNote">ရာသီဥတုဒေတာ: Open-Meteo။ ခန့်မှန်းချက်သည် ဆေးဘက်ဆိုင်ရာအကဲဖြတ်မှု မဟုတ်ပါ။</p></section>
-<section class="ai-spotlight" aria-labelledby="aiSpotlightTitle">
-  <div class="ai-spotlight-top"><span class="ai-sparkle" aria-hidden="true">✦</span><span class="ai-live-pill"><span class="ai-live-dot"></span> AI အကူအညီ ရရှိနိုင်သည်</span></div>
-  <div class="ai-spotlight-content"><div class="ai-robot" aria-hidden="true">🤖</div><div class="ai-spotlight-copy"><p class="ai-kicker">သင့်အတွက် ကိုယ်ပိုင်အကူအညီ</p><h2 id="aiSpotlightTitle">မေးချင်တာရှိလား။ AI ကို မေးကြည့်ပါ။</h2><p>အပူဒဏ်၊ ရေဓာတ်ဖြည့်တင်းရေးနဲ့ အပူလွန်ကဲမှု လက္ခဏာတွေအကြောင်း မြန်မာလို မေးနိုင်ပါတယ်။</p></div></div>
-  <div class="ai-quick-prompts" aria-label="မေးခွန်းနမူနာများ"><button type="button" class="ai-prompt-chip">🥵 နေပူထဲမှာ ခေါင်းမူးရင်?</button><button type="button" class="ai-prompt-chip">💧 ရေဘယ်လောက်သောက်သင့်လဲ?</button><button type="button" class="ai-prompt-chip">👶 ကလေးကို ဘယ်လိုကာကွယ်မလဲ?</button></div>
-  <button type="button" class="ai-spotlight-cta" id="openAiAssistant">AI ကို အခုပဲ မေးကြည့်မယ် <span aria-hidden="true">→</span></button>
-  <p class="ai-spotlight-foot">✨ မြန်မာလို မေးပါ · အခမဲ့ quota ရှိနေချိန်တွင်သာ</p>
-</section>
+
 <section class="panel forecast-panel" id="hourlyForecastPanel"><div class="panelhead"><h2>🕒 ၃ နာရီခြား အပူချိန်ခန့်မှန်းချက်</h2></div><p class="note">နောက် ၂၄ နာရီအတွင်း ၃ နာရီခြား အပူချိန်နှင့် ခံစားရသောအပူချိန်။</p><div id="hourlyForecast" class="forecast-list"><p class="note">တည်နေရာနှင့် ရာသီဥတုဒေတာရရှိသည်နှင့် ပြသပါမည်။</p></div></section>
 <section class="panel forecast-panel" id="dailyForecastPanel"><div class="panelhead"><h2>📅 နောက် ၃ ရက် အပူချိန်ခန့်မှန်းချက်</h2></div><p class="note">နေ့စဉ် အမြင့်ဆုံးအပူချိန်နှင့် ခံစားရသောအပူချိန်အမြင့်ဆုံး။</p><div id="dailyForecast" class="forecast-list"><p class="note">တည်နေရာနှင့် ရာသီဥတုဒေတာရရှိသည်နှင့် ပြသပါမည်။</p></div></section>
 
@@ -27,7 +21,7 @@
   </form>
   <p id="aiChatStatus" class="note" role="status">အခမဲ့ AI quota ရှိနေချိန်တွင်သာ အလုပ်လုပ်ပါမည်။</p>
 </section>
-</main><section class="messenger-contact-section" aria-label="HeatSafe Myanmar ကို ဆက်သွယ်ရန်"><a class="messenger-contact-button" id="messengerContactButton" href="https://m.me/Heatsafemyanmar" aria-label="HeatSafe Myanmar Facebook Messenger မှ ဆက်သွယ်ရန်"><span aria-hidden="true">💬</span> Messenger မှ ဆက်သွယ်ရန်</a><p class="note">Messenger app တပ်ဆင်ထားပါက app ကိုဖွင့်ရန် ကြိုးစားပါမည်။ မရပါက Messenger ဝဘ်စာမျက်နှာကို ဖွင့်ပါမည်။</p></section>
+</main><section class="messenger-contact-section" aria-label="HeatSafe Myanmar ကို ဆက်သွယ်ရန်"><a class="messenger-contact-button" id="messengerContactButton" href="https://m.me/Heatsafemyanmar" aria-label="HeatSafe Myanmar Facebook Messenger မှ ဆက်သွယ်ရန်"><span class="messenger-brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path fill="currentColor" d="M12 2C6.48 2 2 6.18 2 11.34c0 2.94 1.47 5.56 3.77 7.26V22l3.45-1.9c.88.24 1.81.37 2.78.37 5.52 0 10-4.18 10-9.34S17.52 2 12 2Zm1.02 12.57-2.55-2.72-4.98 2.72 5.48-5.82 2.61 2.72 4.92-2.72-5.48 5.82Z"/></svg></span> Facebook Messenger မှ ဆက်သွယ်ရန်</a><p class="note">Messenger app တပ်ဆင်ထားပါက app ကိုဖွင့်ရန် ကြိုးစားပါမည်။ မရပါက Messenger ဝဘ်စာမျက်နှာကို ဖွင့်ပါမည်။</p></section>
 <footer>HeatSafe Myanmar · လူထုအကျိုးပြု အပူဒဏ်ကာကွယ်ရေး</footer><div id="toast" role="status" aria-live="polite"></div><script>
 (function(){
  const panels=[...document.querySelectorAll('main>.panel')];
@@ -39,8 +33,8 @@
    const row=document.createElement('div'); row.className='panel-title-row';
    panel.insertBefore(row,heading); row.appendChild(heading);
    const btn=document.createElement('button'); btn.type='button'; btn.className='panel-toggle'; btn.textContent='ကြည့်ရန်'; btn.setAttribute('aria-expanded','false'); row.appendChild(btn);
-   const isAiPanel = panel.id === 'aiChatPanel'; const initiallyOpen = isAiPanel; if(!initiallyOpen) panel.classList.add('panel-collapsed'); else {btn.textContent='ပိတ်ရန်';btn.setAttribute('aria-expanded','true');}
-   if (isAiPanel) { btn.textContent='AI ဖွင့်ထားသည်'; btn.disabled=true; btn.setAttribute('aria-label','AI အကူအညီကို ဖွင့်ထားသည်'); } else { btn.addEventListener('click',()=>{const collapsed=panel.classList.toggle('panel-collapsed');btn.textContent=collapsed?'ကြည့်ရန်':'ပိတ်ရန်';btn.setAttribute('aria-expanded',String(!collapsed)); if(!collapsed && panel.id==='nearbyPanel' && window.loadNearbyPlaces) window.loadNearbyPlaces();}); }
+   const isAiPanel = panel.id === 'aiChatPanel'; const initiallyOpen = false; if(!initiallyOpen) panel.classList.add('panel-collapsed'); else {btn.textContent='ပိတ်ရန်';btn.setAttribute('aria-expanded','true');}
+   if (isAiPanel) { btn.textContent='AI မေးရန်'; btn.addEventListener('click',()=>{ const collapsed=panel.classList.toggle('panel-collapsed'); btn.textContent=collapsed?'AI မေးရန်':'ပိတ်ရန်'; btn.setAttribute('aria-expanded',String(!collapsed)); if(!collapsed){ panel.scrollIntoView({behavior:'smooth',block:'start'}); const input=document.getElementById('aiChatInput'); if(input) input.focus({preventScroll:true}); } }); } else { btn.addEventListener('click',()=>{const collapsed=panel.classList.toggle('panel-collapsed');btn.textContent=collapsed?'ကြည့်ရန်':'ပိတ်ရန်';btn.setAttribute('aria-expanded',String(!collapsed)); if(!collapsed && panel.id==='nearbyPanel' && window.loadNearbyPlaces) window.loadNearbyPlaces();}); }
  });
 })();
 </script>
@@ -76,13 +70,6 @@
 })();
 </script>
 <script>
-(function(){
-  const panel=document.getElementById('aiChatPanel');
-  const input=document.getElementById('aiChatInput');
-  const open=document.getElementById('openAiAssistant');
-  function focusChat(){ if(!panel||!input)return; panel.classList.add('ai-chat-open'); panel.scrollIntoView({behavior:'smooth',block:'start'}); window.setTimeout(()=>input.focus({preventScroll:true}),350); }
-  if(open) open.addEventListener('click',focusChat);
-  document.querySelectorAll('.ai-prompt-chip,.ai-suggestion').forEach(button=>button.addEventListener('click',()=>{if(!input)return; const text=button.textContent.replace(/^[^\p{L}\p{N}]+/u,'').trim(); input.value=text.endsWith('?')||text.endsWith('။')?text:text+' ဘာလုပ်သင့်လဲ။'; focusChat();}));
-})();
+
 </script>
 <script src="chat.js"></script><script src="app.js"></script></body></html>
